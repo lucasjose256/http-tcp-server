@@ -2,17 +2,14 @@ import java.io.*;
 import java.net.Socket;
 
 public class HttpManager {
-    String message;
-    Socket socket;
+
     HttpManager(String m,Socket s) throws IOException {
-    this.message=m;
-    this.socket=s;
-    getRequest(message,socket);
+    getRequest(m,s);
 
     }
 
     void getRequest(String path, Socket clientSocket) throws IOException {
-        String caminhoDiretorio = "C://Users//Estagiario//IdeaProjects//http_tcp_server//src";
+        String caminhoDiretorio = "C://Users//Rodrigo//IdeaProjects//http-tcp-server//src";
         // String nomeArquivo = "arquivo.txt";
 
         File file = new File(caminhoDiretorio, path);
@@ -33,9 +30,24 @@ public class HttpManager {
 
             fileInputStream.close();
         } else {
-
+            File error = new File(caminhoDiretorio, "/404.html");
             // Arquivo não encontrado - envie uma resposta 404
             writer.writeBytes("HTTP/1.1 404 Not Found\r\n\r\n");
+            FileInputStream fileInputStream = new FileInputStream(error);
+            byte[] buffer = new byte[(int) error.length()];
+
+
+            // Envie o conteúdo do arquivo
+            while (fileInputStream.read(buffer) != -1) {
+                writer.write(buffer);
+            }
+
+
+
+
+
+
+
 
         }
         writer.close();
